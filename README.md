@@ -16,12 +16,13 @@ QuizVerse is a web-based quiz game built with Flask and Jinja templates, styled 
 
 ## Tech Stack
 
-| Layer     | Technology        |
-|-----------|--------------------|
-| Backend   | Flask (Python)     |
-| Templating| Jinja2             |
-| Frontend  | Tailwind CSS       |
-| Database  | MySQL              |
+| Layer     | Technology              |
+|-----------|--------------------------|
+| Backend   | Flask (Python)           |
+| ORM       | Flask-SQLAlchemy         |
+| Templating| Jinja2                   |
+| Frontend  | Tailwind CSS             |
+| Database  | MySQL                    |
 
 ## Project Structure
 
@@ -73,15 +74,17 @@ quizverse/
    Create a `.env` file in the project root with your database credentials and Flask secret key:
    ```
    FLASK_SECRET_KEY=your_secret_key
-   DB_HOST=localhost
-   DB_USER=your_mysql_user
-   DB_PASSWORD=your_mysql_password
-   DB_NAME=quizverse
+   SQLALCHEMY_DATABASE_URI=mysql+mysqlconnector://your_mysql_user:your_mysql_password@localhost/quizverse
    ```
 
 5. Set up the database
 
-   Create the MySQL database and required tables (users, questions, categories, etc.) before running the app.
+   Create the MySQL database (`quizverse`), then create the tables from your SQLAlchemy models, e.g.:
+   ```bash
+   flask shell
+   >>> from app import db
+   >>> db.create_all()
+   ```
 
 6. Run the application
    ```bash
