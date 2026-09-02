@@ -3,18 +3,69 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://cdn.tailwindcss.com"></script>
 	<title>QUIZ APP — {% block title %}{% endblock title %}</title>
-	<style>
-		*{
-			margin: 0px;
-			padding: 0px;
-		}
-	</style>
-</head>
-<body>
-	{% block body %}
 	
-	{% endblock body %}
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/output.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="relative min-h-screen m-0 bg-gradient-to-b from-[#1A0B2E] via-[#0F0A1E] to-[#0A0614]">
+
+	<div class="pointer-events-none fixed inset-0 opacity-[0.08] mix-blend-overlay z-0" 
+	     style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+');"></div>
+
+	<header class="relative z-10">
+		<nav class="top-0 left-0 w-full h-15 z-50 bg-white/5 backdrop-blur-lg border-b border-white/10 text-white p-4 flex justify-around items-center">
+			<div class="logo">
+				<a href="/dashboard"><img src="{{ url_for('static', filename='assets/nav-bar-logo.png') }}" alt="Logo" width="150px"></a>
+			</div>
+			<div class="content_list">
+				<ul class="flex flex-row gap-20 text-[#FFFFFF] font-['poppins'] font-normal">
+					<li>
+						<a href="/dashboard" class="flex items-center gap-2 {{ 'text-purple-400 font-semibold' if request.path == '/dashboard' else 'text-white font-normal' }}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+								<polyline points="9 22 9 12 15 12 15 22"></polyline>
+							</svg>
+							Home
+						</a>
+					</li>
+					<li>
+						<a href="/leaderboards" class="flex items-center gap-2 {{ 'text-purple-400 font-semibold' if request.path == '/leaderboards' else 'text-white font-normal' }}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M8 21h8"></path>
+								<path d="M12 17v4"></path>
+								<path d="M7 4h10v5a5 5 0 0 1-10 0V4z"></path>
+								<path d="M17 5h3a2 2 0 0 1-2 4h-1"></path>
+								<path d="M7 5H4a2 2 0 0 0 2 4h1"></path>
+							</svg>
+							Leaderboards
+						</a>
+					</li>
+					<li>
+						<a href="/categories" class="flex items-center gap-2 {{ 'text-purple-400 font-semibold' if request.path == '/categories' else 'text-white font-normal' }}">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<rect x="3" y="3" width="7" height="7" rx="1"></rect>
+								<rect x="14" y="3" width="7" height="7" rx="1"></rect>
+								<rect x="3" y="14" width="7" height="7" rx="1"></rect>
+								<rect x="14" y="14" width="7" height="7" rx="1"></rect>
+							</svg>
+							Categories
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="btn">
+				<a href="/logout"><button type="submit">Sign out</button></a>
+			</div>
+		</nav>
+	</header>
+
+	<main class="relative z-10">
+		{% block body %}
+		
+		{% endblock body %}
+	</main>
 </body>
 </html>

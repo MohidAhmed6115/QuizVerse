@@ -26,14 +26,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{password}@localh
 class Base(DeclarativeBase):
 	pass
 db = SQLAlchemy(app, model_class=Base)
-
 login_manager = LoginManager()
 login_manager.init_app(app)
+# If someone hasn't login  and tries to visit a page that requires login redirect them to route name login
 login_manager.login_view = 'login'
 
+# Function for checking who is the current logged-in user actually is, it automatically called on every request
 @login_manager.user_loader
 def load_user(user_id):
 	return db.session.get(Users, int(user_id))
+
 
 class Users(UserMixin,db.Model):
 	__tablename__ = "users"
@@ -44,12 +46,14 @@ class Users(UserMixin,db.Model):
 	password : Mapped[str] = mapped_column(String(255))
 	highest_score: Mapped[int] = mapped_column(nullable=True)
 
+
 class LoginForm(FlaskForm):
 	username = StringField(validators=[InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder": "username"})
 
 	password = PasswordField(validators=[InputRequired(), Length(min = 4, max = 20)], render_kw={"placeholder": "password"})
 
 	submit = SubmitField('Log in')
+
 
 class RegisterForm(FlaskForm):
 	email = EmailField(validators=[InputRequired(), Length(min = 4, max = 100)], render_kw={"placeholder":"Email"})
@@ -66,7 +70,7 @@ class RegisterForm(FlaskForm):
 			raise ValidationError(
 				"Username already taken. Please Choose a different one."
 			)
-	def validate_mail(self,email):
+	def validate_email(self,email):
 		existing_mail = Users.query.filter_by(email = email.data).first()
 		if existing_mail:
 			raise ValidationError(
@@ -106,6 +110,12 @@ def signup():
 		return redirect(url_for('login'))
 
 	return render_template("signup.html", form = form)
+
+@app.route("/logout")
+@login_required
+def logout():
+	logout_user()
+	return redirect(url_for('login'))
 
 @app.route('/dashboard')
 @login_required

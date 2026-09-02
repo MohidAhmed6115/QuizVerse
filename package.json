@@ -1,0 +1,25 @@
+{
+  "name": "quizverse",
+  "version": "1.0.0",
+  "description": "QuizVerse is a web-based quiz game built with Flask and Jinja templates, styled with Tailwind CSS. It lets users create an account, choose a quiz category, and answer multiple-choice questions pulled from a MySQL database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohidAhmed6115/QuizVerse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MohidAhmed6115/QuizVerse/issues"
+  },
+  "homepage": "https://github.com/MohidAhmed6115/QuizVerse#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
