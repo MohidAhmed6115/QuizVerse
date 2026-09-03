@@ -10,18 +10,18 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="relative min-h-screen m-0 bg-gradient-to-b from-[#1A0B2E] via-[#0F0A1E] to-[#0A0614]">
+<body class="relative min-h-screen m-0 bg-gradient-to-b from-[#1A0B2E] via-[#0F0A1E] to-[#0A0614] font-['poppins']">
 
 	<div class="pointer-events-none fixed inset-0 opacity-[0.08] mix-blend-overlay z-0" 
 	     style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC45IiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+');"></div>
-
+ {# Nav Bar #}
 	<header class="relative z-10">
 		<nav class="top-0 left-0 w-full h-15 z-50 bg-white/5 backdrop-blur-lg border-b border-white/10 text-white p-4 flex justify-around items-center">
 			<div class="logo">
 				<a href="/dashboard"><img src="{{ url_for('static', filename='assets/nav-bar-logo.png') }}" alt="Logo" width="150px"></a>
 			</div>
 			<div class="content_list">
-				<ul class="flex flex-row gap-20 text-[#FFFFFF] font-['poppins'] font-normal">
+				<ul class="flex flex-row gap-20 text-[#FFFFFF] font-normal">
 					<li>
 						<a href="/dashboard" class="flex items-center gap-2 {{ 'text-purple-400 font-semibold' if request.path == '/dashboard' else 'text-white font-normal' }}">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -56,13 +56,17 @@
 					</li>
 				</ul>
 			</div>
-			<div class="btn">
-				<a href="/logout"><button type="submit">Sign out</button></a>
+
+			<div class="left">
+				<a class="rounded-3xl bg-white/5 backdrop-blur-md px-5 py-1 cursor-default">{{ current_user.username }}</a>
+				<a href="/logout" class="rounded-lg bg-gradient-to-r from-purple-700 via-[#c476f5] to-pink-400 px-5 py-1 font-semibold">
+					Logout
+				</a>
 			</div>
 		</nav>
 	</header>
 
-	<main class="relative z-10">
+	<main class="relative z-10 flex flex-col space-around">
 		{% block body %}
 		
 		{% endblock body %}

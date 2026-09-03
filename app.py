@@ -10,7 +10,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import InputRequired, Length, ValidationError
-
+from datetime import timedelta
 load_dotenv()
 
 password = quote_plus(os.getenv('DB_PASSWORD'))
@@ -22,6 +22,7 @@ app.secret_key = "Secret"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:{password}@localhost/{database}"
 
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=14)
 
 class Base(DeclarativeBase):
 	pass
@@ -79,17 +80,21 @@ class RegisterForm(FlaskForm):
 
 @app.route("/")
 def home():
+	if current_user.is_authenticated:
+		return redirect(url_for('dashboard'))
 	return render_template("home.html")
 
 
 @app.route("/login", methods = ["GET","POST"])
 def login():
 	form = LoginForm()
+	if current_user.is_authenticated:
+			return redirect(url_for('dashboard'))
 	if form.validate_on_submit():
 		user = Users.query.filter_by(username = form.username.data).first()
 		if user:
 			if bcrypt.check_password_hash(user.password, form.password.data):
-				login_user(user)
+				login_user(user, remember = True)
 				return redirect(url_for('dashboard'))
 			else:
 				flash("You Entered wrong Password")
@@ -101,6 +106,8 @@ def login():
 @app.route("/signup", methods = ["GET","POST"])
 def signup():
 	form = RegisterForm()
+	if current_user.is_authenticated:
+			return redirect(url_for('dashboard'))
 	if form.validate_on_submit():
 		hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 		new_user = Users(username = form.username.data, password = hashed_password, email = form.email.data)
@@ -121,6 +128,12 @@ def logout():
 @login_required
 def dashboard():
 	return render_template("dashboard.html")
+
+@app.route('/categories')
+@login_required
+def categories():
+	return render_template("categories.html")
+
 
 if __name__ == "__main__":
 	app.run(debug=True)

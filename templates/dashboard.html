@@ -5,5 +5,18 @@
 
 {% block body %}
 
-Hey {{current_user.username}} logged In
+<div class="rounded-lg shadow-lg w-50 h-50 m-20 bg-gradient-to-br from-[#2e2f8f] to-[#121357] flex flex-col p-3 gap-5">
+	<div class="flex flex-row items-center gap-3 text-white">
+	<img width="50px" height="50px" src="{{url_for('static',filename = '/assets/high-score-img.png')}}" alt="High Score Image">
+	<h1 class="">High Score</h1>
+	</div>
+{% if current_user.highest_score is none %}
+	<h1 class="text-[64px] text-white">0</h1>
+{% else %}
+	<h1>{{current_user.highest_score}}</h1>
+{% endif %}
+
+</div>
+
+
 {% endblock body %}
