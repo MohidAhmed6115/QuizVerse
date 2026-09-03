@@ -1,7 +1,7 @@
 from flask import Flask,session,render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Text, DateTime, func
+from sqlalchemy import Integer, String, Text, DateTime, func, select
 from dotenv import load_dotenv
 from urllib.parse import quote_plus
 import os
@@ -101,7 +101,7 @@ class RegisterForm(FlaskForm):
 class QuizQuestionChoice(FlaskForm):
 	answer = RadioField('Choose an Answer', validators=[InputRequired()])
 
-	submit = SubmitField("Next") 
+	submit = SubmitField() 
 
 @app.route("/")
 def home():
@@ -201,11 +201,32 @@ def start_quiz(category):
 		answers = session.get('quiz_answers',{})
 		answers[str(current_question.id)] = selected_answer
 		session['quiz_answers'] = answers
-				
+
+		if selected_answer == current_question.correct_option: 
+			session['score'] = session.get('score',0) + 1
+		
 		if page == last:
 			return redirect(url_for('quiz_results'))
 		return redirect(next)
 	return render_template("quiz.html", question = current_question, prev = prev, next = next, form = form)
 
+@app.route("/result")
+@login_required
+def quiz_results():
+	score = session['score']
+	row = Users.query.filter_by(username = current_user.username).first()
+	high_score = row.highest_score
+	
+	
+	if high_score is None or score > high_score:
+		row.highest_score = score
+
+		db.session.commit()
+
+	session.pop('score',None)
+	return render_template("result.html", score = score)
+
+
+
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=True)	
