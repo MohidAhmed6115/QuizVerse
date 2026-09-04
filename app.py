@@ -187,6 +187,7 @@ def start_quiz(category):
 		prev = "#"
 		next = "#"
 	elif page == 0:
+		session.pop('quiz_answers')
 		prev = "#"
 		next = url_for('start_quiz',category = category) + "?page=" + str(page + 1)
 	elif page == last:
