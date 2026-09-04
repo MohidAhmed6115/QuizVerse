@@ -230,3 +230,8 @@ def quiz_results():
 
 if __name__ == "__main__":
 	app.run(debug=True)	
+
+
+# TODO: prevent double-counting if a question is answered more than once
+# (e.g. browser back button + resubmit). Currently re-answering just
+# overwrites answers[id] but still re-runs the score increment below.
